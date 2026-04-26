@@ -2,9 +2,10 @@ const { test, expect } = require('@playwright/test');
 
 test.describe('Booking Search', () => {
 
+    //open booking.com and close all popup windows
     test.beforeEach(async ({ page }) => {
         await page.goto('https://www.booking.com');
-        await page.addInitScript(() => {
+        await page.addInitScript(() => { 
             Object.defineProperty(window, 'google', {
                 get: () => undefined
             });
