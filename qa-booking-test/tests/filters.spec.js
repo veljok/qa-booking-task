@@ -11,8 +11,6 @@ async function closeOverlays(page) {
     await page.mouse.click(10, 10).catch(() => { });
 }
 
-
-//test group
 test.describe('Booking Filters', () => {
 
     //search for a destination before each test 
@@ -93,5 +91,48 @@ test.describe('Booking Filters', () => {
             .toBeVisible();
         await expect(sortBtn).toBeVisible();
     });
+    // test if numeric rating mach textual rating
+    test('Rating numeric and text consistency', async ({ page }) => {
 
+        // filter by rating
+        const filter = page
+            .getByRole('group', { name: /review score/i })
+            .getByRole('checkbox', { name: /very good.*8\+/i });
+
+        await filter.click();
+        await page.waitForTimeout(2500);
+        //count number of results
+        const cards = page.locator('[data-testid="property-card"]');
+        const count = await cards.count();
+        expect(count).toBeGreaterThan(0); // to be more than 0
+        //check only the first 10 results
+        for (let i = 0; i < Math.min(count, 10); i++) {
+
+            const card = cards.nth(i);
+
+            const scoreEl = card.locator('[data-testid="review-score"]');
+            const textEl = card.locator('[data-testid="review-score"] + div, [aria-label*="Scored"]');
+            //skip if score doesnt display
+            if (!(await scoreEl.isVisible())) continue;
+
+            const scoreText = await scoreEl.innerText();
+            const score = parseFloat(scoreText.replace(',', '.'));
+
+            if (isNaN(score)) continue;
+            //make labels lowercase 
+            let label = '';
+            if (await textEl.isVisible()) {
+                label = (await textEl.innerText()).toLowerCase();
+            }
+
+            // validation
+            if (score >= 9) {
+                expect(label).toMatch(/superb|excellent|wonderful/);
+            } else if (score >= 8) {
+                expect(label).toMatch(/very good|fabulous/);
+            } else if (score >= 7) {
+                expect(label).toMatch(/good/);
+            }
+        }
+    });
 });

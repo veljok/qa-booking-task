@@ -11,7 +11,7 @@ async function closeOverlays(page) {
     await page.mouse.click(10, 10).catch(() => { });
 }
 
-test.describe('Booking Filters', () => {
+test.describe('booking interactions', () => {
 
     //search for a destination before each test 
     test.beforeEach(async ({ page }) => {
@@ -78,5 +78,23 @@ test.describe('Booking Filters', () => {
         expect(newCount).toBeGreaterThan(initialCount);
     });
 
+    //does going back and forward keep search results
+    test('Back and Forward keeps search query in URL', async ({ page }) => {
+
+        // check url
+        await expect(page).toHaveURL(/Novi\+Sad|ss=/i);
+        const initialURL = page.url();
+
+        // go back 
+        await page.goBack();
+        await page.waitForLoadState('domcontentloaded');
+
+        // go forward
+        await page.goForward();
+        await page.waitForLoadState('domcontentloaded');
+
+        // check again
+        await expect(page).toHaveURL(/Novi\+Sad|ss=Novi\+Sad/i);
+    });
 
 });
