@@ -9,38 +9,34 @@ Tests cover UI interactions, filters, search behavior, and edge cases.
 # Project Structure
 
 
-qa-booking-test/
-│
-├── .github/workflows/
-│
-├── Codecept/ 
-│ ├── codecept-tests/ # CodeceptJS Test files
-│ │ ├── booking-search_test.js
-│ │ ├── edge-cases_test.js
-│ │ ├── filters_test.js
-│ │ ├── interactions_test.js
-│ │
-│ ├── output/ # Test reports & screenshots
-│ ├── codecept.conf.js
-│ ├── steps_file.js
-│ ├── package.json
-│ ├── package-lock.json
-│ ├── jsconfig.json
-│ ├── steps.d.ts
-│
-├── tests/ # Playwright test files
-│ ├── booking-search.spec.js
-│ ├── edge-cases.spec.js
-│ ├── filters.spec.js
-│ ├── interactions.spec.js
-│ ├── example.spec.js
-│
-├── test-results/ # Playwright reports/artifacts
-│
-├── playwright.config.js
-├── package.json
-├── package-lock.json
-├── .gitignore
+**qa-booking-test**
+
+- .github/workflows/ 
+
+- Codecept/
+  - codecept-tests/
+    - booking-search_test.js
+    - edge-cases_test.js
+    - filters_test.js
+    - interactions_test.js
+  - output/ – test reports & screenshots
+  - codecept.conf.js
+  - steps_file.js
+  - jsconfig.json
+  - steps.d.ts
+
+- tests/ (Playwright)
+  - booking-search.spec.js
+  - edge-cases.spec.js
+  - filters.spec.js
+  - interactions.spec.js
+  - example.spec.js
+
+- test-results/ – Playwright artifacts
+
+- playwright.config.js
+- package.json
+- .gitignore
 
 # How to Run Tests
 
@@ -51,7 +47,7 @@ This project contains two separate test suites:
 
 You can run them independently.
 
-1. Running Playwright Tests (Recommended First)
+1. Running Playwright Tests
 
 Playwright tests are located in: tests/
 
