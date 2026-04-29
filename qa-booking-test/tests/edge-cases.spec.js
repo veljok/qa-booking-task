@@ -27,7 +27,8 @@ test.describe('booking edge cases', () => {
 
         const count = await results.count();
 
-        expect(count).toBeGreaterThanOrEqual(0);
+        await expect(page).toHaveURL(/ss=|search/i);
+        await expect(page.locator('body')).toBeVisible();
 
         // check if page is not crashed
         await expect(page).toHaveURL(/ss=|search/);
@@ -52,21 +53,21 @@ test.describe('booking edge cases', () => {
     //extra whitespace input
     test('Search handles extra whitespace in input', async ({ page }) => {
 
-    await page.goto('https://www.booking.com');
-    await closeOverlays(page);
+        await page.goto('https://www.booking.com');
+        await closeOverlays(page);
 
-    const searchBox = page.locator('input[name="ss"]');
+        const searchBox = page.locator('input[name="ss"]');
 
-    // input a lot of spaces
-    await searchBox.fill('     Novi     Sad     ');
-    await page.keyboard.press('Enter');
+        // input a lot of spaces
+        await searchBox.fill('     Novi     Sad     ');
+        await page.keyboard.press('Enter');
 
-    // wait for result
-    const results = page.locator('[data-testid="property-card"]');
-    await expect(results.first()).toBeVisible({ timeout: 20000 });
+        // wait for result
+        const results = page.locator('[data-testid="property-card"]');
+        await expect(results.first()).toBeVisible({ timeout: 20000 });
 
-    // check if url shows search without extra spaces
-    await expect(page).toHaveURL(/Novi.*Sad/i);
-});
+        // check if url shows search without extra spaces
+        await expect(page).toHaveURL(/Novi.*Sad/i);
+    });
 
 });
